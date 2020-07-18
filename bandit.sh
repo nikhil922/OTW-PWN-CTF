@@ -48,7 +48,24 @@ autoSSH(){
 	sshCopy 3 /home/bandit3/inhere/.hidden ./otw/tmp
 	mv ./otw/tmp/.hidden ./otw/tmp/pass
 	echo "bandit 4 password is: $(<./otw/tmp/pass)"
-
+	
+	#level 4-5
+	#password is stored in the only human-readable file
+	ban4(){
+		cd inhere
+		echo "list of files and their types using wildcard:"
+		file ./-file*
+		echo "list files and their types using xargs:"
+		find . -type f | xargs file
+		echo "list only human-readable files:"
+		find . -type f -exec file {} + | grep ASCII
+	}
+	sshAccess 4 "$(typeset -f ban4); ban4"
+	sshCopy 4 /home/bandit4/inhere/./-file07 ./otw/tmp
+	mv ./otw/tmp/./-file07 ./otw/tmp/pass
+	echo "password for level 5 is: $(<./otw/tmp/pass) " 
+	
 	rm -r ./otw/tmp
 }
+
 autoSSH;
