@@ -12,7 +12,7 @@ sshCopy(){
 	sshpass -f ./otw/tmp/pass scp -P 2220 bandit$1@bandit.labs.overthewire.org:$2 $3
 }
 
-#mkdir ./otw/tmp
+mkdir ./otw/tmp
 
 #level 0-1
 #pasword is bandit0
@@ -64,7 +64,7 @@ ban4(){
 sshAccess 4 "$(typeset -f ban4); ban4"
 sshCopy 4 /home/bandit4/inhere/./-file07 ./otw/tmp
 mv ./otw/tmp/./-file07 ./otw/tmp/pass
-echo "password for level 5 is: $(<./otw/tmp/pass)" 
+echo "bandit 5 password is: $(<./otw/tmp/pass)" 
 
 #level 5-6
 #password has properties: human-readable, 1033 bytes in size, not executable
@@ -74,6 +74,12 @@ mv ./otw/tmp/.file2 ./otw/tmp/pass
 echo "bandit 6 password is:  $(<./otw/tmp/pass)"
 
 #level 6-7
-sshAccess 6 'ls -a'
+#password is somewhere in server has properties: owned by user bandit7, owned by group6, 33 bytes in size
+#forward slash used to search entire file system
+#2>dev/null redirects error messages ("Permission denied etc.") from terminal to /dev/null thats discarded by system
+sshAccess 6 'find / -type f -user bandit7 -group bandit6 -size 33c 2>/dev/null'
+sshCopy 6 /var/lib/dpkg/info/bandit7.password ./otw/tmp
+mv ./otw/tmp/bandit7.password ./otw/tmp/pass
+echo "bandit 7 password is $(<./otw/tmp/pass)"
 
-#rm -r ./otw/tmp
+rm -r ./otw/tmp
