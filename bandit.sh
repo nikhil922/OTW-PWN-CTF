@@ -115,6 +115,14 @@ strings ./f0 | grep -Eo "\<.{32}\>" > ./pass
 rm ./f0
 echo "bandit 10 password is $(<./pass)"
 
+#level 10-11
+#password is a base64 encoded file
+sshAccess 10 'ls; base64 -d data.txt'
+sshCopy 10 /home/bandit10/data.txt ./f0
+base64 -d ./f0 | grep -Eo "\<.{32}\>" > ./pass
+rm ./f0
+echo "bandit 10 password is: $(<./pass)"
+
 rm ./pass
 
 end=`date +%s`
