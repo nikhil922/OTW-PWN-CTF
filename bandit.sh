@@ -123,6 +123,14 @@ base64 -d ./f0 | grep -Eo "\<.{32}\>" > ./pass
 rm ./f0
 echo "bandit 10 password is: $(<./pass)"
 
+#level 11-12
+#password is where all letters (a-z A-Z) have been rotated by 13 poistions (Rot13 encoded)
+sshAccess 11 'ls;cat data.txt | tr 'a-zA-Z' 'n-za-mN-ZA-M''
+sshCopy 11 /home/bandit11/data.txt ./f0
+cat ./f0 | tr 'A-Za-z' 'N-ZA-Mn-za-m' | grep -Eo "\<.{32}\>" > ./pass
+rm ./f0
+echo "bandit 12 password is $(<./pass)"
+
 rm ./pass
 
 end=`date +%s`
