@@ -90,8 +90,8 @@ ban7(){
 	#find line with millionth: cat (or strings) data.txt | grep "millionth" or
 	grep millionth data.txt
 	mkdir /tmp/tempY
-	#find line with millionth remove word millionth output to file
-	grep millionth data.txt | sed 's/millionth//g' > /tmp/tempY/f0
+	#find line with millionth| remove word millionth/tabs > output to file
+	grep millionth data.txt | sed 's/millionth//g' | sed -e 's/[ \t*]//' > /tmp/tempY/f0
 }
 sshAccess 7 "$(typeset -f ban7); ban7"
 sshCopy 7 /tmp/tempY/f0 ./
@@ -99,8 +99,16 @@ sshAccess 7 'rm -r /tmp/tempY'
 mv ./f0 ./pass
 echo "bandit 8 password is: $(<./pass)"
 
+#level 8-9
+#password is stored in file and is the only line that occurs once
+sshAccess 8 'ls' 
+sshCopy 8 /home/bandit8/data.txt ./f0
+sort ./f0 | uniq -u > ./pass
+rm ./f0
+echo "bandit 9 password is: $(<./pass)"
+
 rm ./pass
 
 end=`date +%s`
 runtime=$((end-start))
-echo "*** script took"  $runtime "seconds to execute ***"
+echo "### script took $runtime seconds to execute ###"
