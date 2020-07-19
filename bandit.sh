@@ -3,6 +3,8 @@
 # WARNING! put script in folder, cd before running script to prevent files from being possibly deleted 
 # NIKHIL JEEWA
 
+start=`date +%s`
+
 #access server
 sshAccess(){ 
 	sshpass -f ./pass ssh -o StrictHostKeyChecking=no bandit$1@bandit.labs.overthewire.org -p2220 "$2"
@@ -98,3 +100,7 @@ mv ./f0 ./pass
 echo "bandit 8 password is: $(<./pass)"
 
 rm ./pass
+
+end=`date +%s`
+runtime=$((end-start))
+echo "*** script took"  $runtime "seconds to execute ***"
