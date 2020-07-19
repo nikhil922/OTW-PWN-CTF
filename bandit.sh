@@ -12,7 +12,7 @@ sshCopy(){
 	sshpass -f ./otw/tmp/pass scp -P 2220 bandit$1@bandit.labs.overthewire.org:$2 $3
 }
 
-mkdir ./otw/tmp
+#mkdir ./otw/tmp
 
 #level 0-1
 #pasword is bandit0
@@ -66,4 +66,14 @@ sshCopy 4 /home/bandit4/inhere/./-file07 ./otw/tmp
 mv ./otw/tmp/./-file07 ./otw/tmp/pass
 echo "password for level 5 is: $(<./otw/tmp/pass)" 
 
-rm -r ./otw/tmp
+#level 5-6
+#password has properties: human-readable, 1033 bytes in size, not executable
+sshAccess 5 'find -type f -size 1033c ! -executable'
+sshCopy 5 /home/bandit5/inhere/maybehere07/.file2 ./otw/tmp
+mv ./otw/tmp/.file2 ./otw/tmp/pass
+echo "bandit 6 password is:  $(<./otw/tmp/pass)"
+
+#level 6-7
+sshAccess 6 'ls -a'
+
+#rm -r ./otw/tmp
