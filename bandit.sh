@@ -1,6 +1,7 @@
 #!/bin/bash
-### Auto SSH Wargame Script ###
-#NIKHIL JEEWA
+### Auto SSH OTW-bandit Script ###
+# WARNING! put script in folder, cd before running script to prevent files from being possibly deleted 
+# NIKHIL JEEWA
 
 #access server
 sshAccess(){ 
@@ -73,11 +74,27 @@ echo "bandit 6 password is:  $(<./pass)"
 
 #level 6-7
 #password is somewhere in server has properties: owned by user bandit7, owned by group6, 33 bytes in size
-#forward slash used to search entire file system
+#/ to search entire file system
 #2>dev/null redirects error messages ("Permission denied etc.") from terminal to /dev/null thats discarded by system
 sshAccess 6 'find / -type f -user bandit7 -group bandit6 -size 33c 2>/dev/null'
 sshCopy 6 /var/lib/dpkg/info/bandit7.password ./
 mv ./bandit7.password ./pass
 echo "bandit 7 password is $(<./pass)"
+
+#level 7-8
+#password stored in file next to word millionth 
+ban7(){
+	ls
+	#find line with millionth: cat (or strings) data.txt | grep "millionth" or
+	grep millionth data.txt
+	mkdir /tmp/tempY
+	#find line with millionth remove word millionth output to file
+	grep millionth data.txt | sed 's/millionth//g' > /tmp/tempY/f0
+}
+sshAccess 7 "$(typeset -f ban7); ban7"
+sshCopy 7 /tmp/tempY/f0 ./
+sshAccess 7 'rm -r /tmp/tempY'
+mv ./f0 ./pass
+echo "bandit 8 password is: $(<./pass)"
 
 rm ./pass
