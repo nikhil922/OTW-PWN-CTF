@@ -107,6 +107,14 @@ sort ./f0 | uniq -u > ./pass
 rm ./f0
 echo "bandit 9 password is: $(<./pass)"
 
+#level 9-10
+#password is file proeceded by serveral '=' characters
+sshAccess 9 'ls; strings data.txt | grep ='
+sshCopy 9 /home/bandit9/data.txt ./f0
+strings ./f0 | grep -Eo "\<.{32}\>" > ./pass
+rm ./f0
+echo "bandit 10 password is $(<./pass)"
+
 rm ./pass
 
 end=`date +%s`
