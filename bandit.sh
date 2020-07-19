@@ -31,9 +31,9 @@ mv ./otw/tmp/./- ./otw/tmp/pass
 echo "bandit 2 password is: $(<./otw/tmp/pass)"
 
 #level 2-3
-#pasword is in a file with spaces in filename
+#pasword is in a file with spaces in filename use "" or '' or backslash (spaces\ in\ this\ filename)
 ban2(){
-	ls
+	ls	
 	mkdir /tmp/tempY
 	cp "spaces in this filename" /tmp/tempY/f0
 }
