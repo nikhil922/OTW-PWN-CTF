@@ -21,13 +21,13 @@ echo "bandit 0"
 echo "bandit0"> ./pass
 sshAccess 0 'ls'
 sshCopy 0 /home/bandit0/readme ./pass
-echo "bandit 1 password is: $(<./pass)"
+echo "bandit 1 password is $(<./pass)"
 
 #level 1-2
 #password is in a file called -
 sshAccess 1 'ls'	
 sshCopy 1 /home/bandit1/./- ./pass
-echo "bandit 2 password is: $(<./pass)"
+echo "bandit 2 password is $(<./pass)"
 
 #level 2-3
 #pasword is in a file with spaces in filename use "" or '' or backslash (spaces\ in\ this\ filename)
@@ -40,13 +40,13 @@ sshAccess 2 "$(typeset -f ban2); ban2"
 sshCopy 2 /tmp/tempY/f0 ./
 sshAccess 2 'rm -r /tmp/tempY'
 mv ./f0 ./pass
-echo "bandit 3 password is: $(<./pass)"
+echo "bandit 3 password is $(<./pass)"
 
 #level 3-4
 #password is in a hidden file
 sshAccess 3 'ls; cd inhere; ls -a'
 sshCopy 3 /home/bandit3/inhere/.hidden ./pass
-echo "bandit 4 password is: $(<./pass)"
+echo "bandit 4 password is $(<./pass)"
 
 #level 4-5
 #password is stored in the only human-readable file
@@ -61,13 +61,13 @@ ban4(){
 }
 sshAccess 4 "$(typeset -f ban4); ban4"
 sshCopy 4 /home/bandit4/inhere/./-file07 ./pass
-echo "bandit 5 password is: $(<./pass)" 
+echo "bandit 5 password is $(<./pass)" 
 
 #level 5-6
 #password has properties: human-readable, 1033 bytes in size, not executable
 sshAccess 5 'find -type f -size 1033c ! -executable'
 sshCopy 5 /home/bandit5/inhere/maybehere07/.file2 ./pass
-echo "bandit 6 password is:  $(<./pass)"
+echo "bandit 6 password is $(<./pass)"
 
 #level 6-7
 #password is somewhere in server has properties: owned by user bandit7, owned by group6, 33 bytes in size
@@ -91,14 +91,14 @@ sshAccess 7 "$(typeset -f ban7); ban7"
 sshCopy 7 /tmp/tempY/f0 ./
 sshAccess 7 'rm -r /tmp/tempY'
 mv ./f0 ./pass
-echo "bandit 8 password is: $(<./pass)"
+echo "bandit 8 password is $(<./pass)"
 
 #level 8-9
 #password is stored in file and is the only line that occurs once
 sshAccess 8 'ls' 
 sshCopy 8 /home/bandit8/data.txt ./f0
 sort ./f0 | uniq -u > ./pass
-echo "bandit 9 password is: $(<./pass)"
+echo "bandit 9 password is $(<./pass)"
 
 #level 9-10
 #password is file proeceded by serveral '=' characters
@@ -112,7 +112,7 @@ echo "bandit 10 password is $(<./pass)"
 sshAccess 10 'ls; base64 -d data.txt'
 sshCopy 10 /home/bandit10/data.txt ./f0
 base64 -d ./f0 | grep -Eo "\<.{32}\>" > ./pass
-echo "bandit 10 password is: $(<./pass)"
+echo "bandit 10 password is $(<./pass)"
 
 #level 11-12
 #password is where all letters (a-z A-Z) have been rotated by 13 poistions (Rot13 encoded)
@@ -123,8 +123,10 @@ echo "bandit 12 password is $(<./pass)"
 
 #level 12-13
 #password is in a hexdump file that has been repeatedly compressed
+#compression: gzip (variants: gunzip, zcat), bzip2 variants: (bunzip, bzcat), tar
 sshAccess 12 'ls'
 sshCopy 12 /home/bandit12/data.txt ./f0
+#revert hexdump to binary
 xxd -r ./f0 > f1
 file ./f1
 mv ./f1 ./f1.gz
@@ -134,7 +136,7 @@ mv ./f1 ./f1.bz2
 bzip2 -d ./f1.bz2
 file ./f1
 mv ./ f1 ./f1.gz
-gzip -d ./f1.gz
+gunzip ./f1.gz
 file ./f1
 mv ./f1 ./f1.tar
 tar xf ./f1.tar
@@ -145,7 +147,7 @@ tar xf ./f1.tar
 ls
 file ./data6.bin
 mv ./data6.bin ./f1.bz2
-bzip2 -d ./f1.bz2
+bunzip2 ./f1.bz2
 file ./f1
 mv ./f1 ./f1.tar
 tar xf ./f1.tar
@@ -157,7 +159,7 @@ file ./f1
 cat ./f1
 cat ./f1 | grep -Eo "\<.{32}\>" > ./pass
 rm ./f1.tar
-echo "bandit 13 password is : $(<./pass)"
+echo "bandit 13 password is $(<./pass)"
 
 rm ./pass ./f0 ./f1
 
