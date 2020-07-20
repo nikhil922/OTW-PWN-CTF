@@ -121,7 +121,45 @@ sshCopy 11 /home/bandit11/data.txt ./f0
 cat ./f0 | tr 'A-Za-z' 'N-ZA-Mn-za-m' | grep -Eo "\<.{32}\>" > ./pass
 echo "bandit 12 password is $(<./pass)"
 
-rm ./pass ./f0
+#level 12-13
+#password is in a hexdump file that has been repeatedly compressed
+sshAccess 12 'ls'
+sshCopy 12 /home/bandit12/data.txt ./f0
+xxd -r ./f0 > f1
+file ./f1
+mv ./f1 ./f1.gz
+gzip -d ./f1.gz
+file ./f1
+mv ./f1 ./f1.bz2
+bzip2 -d ./f1.bz2
+file ./f1
+mv ./ f1 ./f1.gz
+gzip -d ./f1.gz
+file ./f1
+mv ./f1 ./f1.tar
+tar xf ./f1.tar
+ls
+file ./data5.bin
+mv ./data5.bin ./f1.tar
+tar xf ./f1.tar
+ls
+file ./data6.bin
+mv ./data6.bin ./f1.bz2
+bzip2 -d ./f1.bz2
+file ./f1
+mv ./f1 ./f1.tar
+tar xf ./f1.tar
+ls
+file ./data8.bin
+mv ./data8.bin ./f1.gz
+gzip -d ./f1.gz
+file ./f1
+cat ./f1
+cat ./f1 | grep -Eo "\<.{32}\>" > ./pass
+rm ./f1.tar
+echo "bandit 13 password is : $(<./pass)"
+
+rm ./pass ./f0 ./f1
 
 end=`date +%s`
 runtime=$((end-start))
