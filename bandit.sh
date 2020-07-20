@@ -20,15 +20,13 @@ sshCopy(){
 echo "bandit 0"
 echo "bandit0"> ./pass
 sshAccess 0 'ls'
-sshCopy 0 /home/bandit0/readme ./
-mv ./readme ./pass
+sshCopy 0 /home/bandit0/readme ./pass
 echo "bandit 1 password is: $(<./pass)"
 
 #level 1-2
 #password is in a file called -
 sshAccess 1 'ls'	
-sshCopy 1 /home/bandit1/./- ./
-mv ././- ./pass
+sshCopy 1 /home/bandit1/./- ./pass
 echo "bandit 2 password is: $(<./pass)"
 
 #level 2-3
@@ -47,8 +45,7 @@ echo "bandit 3 password is: $(<./pass)"
 #level 3-4
 #password is in a hidden file
 sshAccess 3 'ls; cd inhere; ls -a'
-sshCopy 3 /home/bandit3/inhere/.hidden ./
-mv ./.hidden ./pass
+sshCopy 3 /home/bandit3/inhere/.hidden ./pass
 echo "bandit 4 password is: $(<./pass)"
 
 #level 4-5
@@ -63,15 +60,13 @@ ban4(){
 	find . -type f -exec file {} + | grep ASCII
 }
 sshAccess 4 "$(typeset -f ban4); ban4"
-sshCopy 4 /home/bandit4/inhere/./-file07 ./
-mv ././-file07 ./pass
+sshCopy 4 /home/bandit4/inhere/./-file07 ./pass
 echo "bandit 5 password is: $(<./pass)" 
 
 #level 5-6
 #password has properties: human-readable, 1033 bytes in size, not executable
 sshAccess 5 'find -type f -size 1033c ! -executable'
-sshCopy 5 /home/bandit5/inhere/maybehere07/.file2 ./
-mv ./.file2 ./pass
+sshCopy 5 /home/bandit5/inhere/maybehere07/.file2 ./pass
 echo "bandit 6 password is:  $(<./pass)"
 
 #level 6-7
@@ -79,8 +74,7 @@ echo "bandit 6 password is:  $(<./pass)"
 #/ to search entire file system
 #2>dev/null redirects error messages ("Permission denied etc.") from terminal to /dev/null thats discarded by system
 sshAccess 6 'find / -type f -user bandit7 -group bandit6 -size 33c 2>/dev/null'
-sshCopy 6 /var/lib/dpkg/info/bandit7.password ./
-mv ./bandit7.password ./pass
+sshCopy 6 /var/lib/dpkg/info/bandit7.password ./pass
 echo "bandit 7 password is $(<./pass)"
 
 #level 7-8
@@ -104,7 +98,6 @@ echo "bandit 8 password is: $(<./pass)"
 sshAccess 8 'ls' 
 sshCopy 8 /home/bandit8/data.txt ./f0
 sort ./f0 | uniq -u > ./pass
-rm ./f0
 echo "bandit 9 password is: $(<./pass)"
 
 #level 9-10
@@ -112,7 +105,6 @@ echo "bandit 9 password is: $(<./pass)"
 sshAccess 9 'ls; strings data.txt | grep ='
 sshCopy 9 /home/bandit9/data.txt ./f0
 strings ./f0 | grep -Eo "\<.{32}\>" > ./pass
-rm ./f0
 echo "bandit 10 password is $(<./pass)"
 
 #level 10-11
@@ -120,7 +112,6 @@ echo "bandit 10 password is $(<./pass)"
 sshAccess 10 'ls; base64 -d data.txt'
 sshCopy 10 /home/bandit10/data.txt ./f0
 base64 -d ./f0 | grep -Eo "\<.{32}\>" > ./pass
-rm ./f0
 echo "bandit 10 password is: $(<./pass)"
 
 #level 11-12
@@ -128,10 +119,9 @@ echo "bandit 10 password is: $(<./pass)"
 sshAccess 11 'ls;cat data.txt | tr 'a-zA-Z' 'n-za-mN-ZA-M''
 sshCopy 11 /home/bandit11/data.txt ./f0
 cat ./f0 | tr 'A-Za-z' 'N-ZA-Mn-za-m' | grep -Eo "\<.{32}\>" > ./pass
-rm ./f0
 echo "bandit 12 password is $(<./pass)"
 
-rm ./pass
+rm ./pass ./f0
 
 end=`date +%s`
 runtime=$((end-start))
