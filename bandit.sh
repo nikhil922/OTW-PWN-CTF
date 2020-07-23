@@ -165,7 +165,6 @@ echo "bandit 13 password is $(<./pass)"
 #password for next level is stored in /etc/bandit_pass/bandit14 and can only be read by user bandit14. use private ssh to log in next level using localhost   
 
 sshAccess 13 "ssh -o StrictHostKeyChecking=no -i sshkey.private bandit14@localhost 'cat /etc/bandit_pass/bandit14'"
->&2
 
 rm ./pass ./f0 ./f1
 
