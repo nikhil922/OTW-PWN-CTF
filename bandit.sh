@@ -1,5 +1,5 @@
 #!/bin/bash
-### Auto SSH OTW-bandit Script ###
+### OverTheWire - bandit level 0-13 Script ###
 # WARNING! put script in folder, cd before running script to prevent files from being possibly deleted 
 # NIKHIL JEEWA
 
@@ -161,8 +161,14 @@ cat ./f1 | grep -Eo "\<.{32}\>" > ./pass
 rm ./f1.tar
 echo "bandit 13 password is $(<./pass)"
 
+#level 13-14
+#password for next level is stored in /etc/bandit_pass/bandit14 and can only be read by user bandit14. use private ssh to log in next level using localhost   
+
+sshAccess 13 "ssh -o StrictHostKeyChecking=no -i sshkey.private bandit14@localhost 'cat /etc/bandit_pass/bandit14'"
+>&2
+
 rm ./pass ./f0 ./f1
 
 end=`date +%s`
 runtime=$((end-start))
-echo "### script took $runtime seconds to execute ###"
+echo "### script took $runtime seconds to execute! ###"
