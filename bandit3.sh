@@ -7,4 +7,4 @@ HOST=bandit.labs.overthewire.org
 
 sshpass -p $PASS ssh -qp $PORT $USER@$HOST "cat inhere/.hidden"
 
-(>&2 echo "Completed $USER")
+(>&2 echo $PASS "Completed $USER")

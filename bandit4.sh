@@ -5,6 +5,6 @@ PASS=$(./bandit3.sh)
 PORT=2220
 HOST=bandit.labs.overthewire.org
 
-sshpass -p $PASS ssh -qp $PORT $USER@$HOST "find . -type f -exec cat {} + | grep ASCII" 
+sshpass -p $PASS ssh -qp $PORT $USER@$HOST 'cat $(find ./inhere -type f -exec file {} + | grep ASCII | cut -d':' -f1)' 
 
-(>&2 echo "Completed $USER")
+(>&2 echo $PASS "Completed $USER")
