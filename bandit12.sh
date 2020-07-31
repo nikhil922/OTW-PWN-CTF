@@ -1,11 +1,11 @@
 #!/bin/sh
 
 USER=bandit12
-PASS=(./bandit11.sh)
+PASS=$(./bandit11.sh)
 PORT=2220
 HOST=bandit.labs.overthewire.org
 
-sshpass -p $PASS ssh -p $PORT $USER@$HOST '
+sshpass -p $PASS ssh -qp $PORT $USER@$HOST '
 	if [ -d "/tmp/tmpBan" ] 
 	then
 		rm -r /tmp/tmpBan
